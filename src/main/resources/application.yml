@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lottery01?characterEncoding=utf-8
+    username: root
+    password: root
+
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sqp: true
+
+  resources:
+    static-locations: classpath:/static

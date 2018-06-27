@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .ball-div {
+            border: 1px solid gainsboro;
+            min-height: 80px;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{common/header :: header}">...</div>
+<div class="container-fluid">
+    <div class="row title">
+        <div class="col-xs-12">
+            <div style="float: left;" onclick="javascript:history.back()">&lt;返回</div>
+            博彩论坛
+        </div>
+    </div>
+
+    <!--2.广告轮播图部分-->
+    <div th:replace="~{common/carousel :: #carousel }"></div>
+
+    <script>
+        <!--跳转至帖子详情页-->
+        function showDetail(id) {
+            location.href="/note/detail?nid=" + id;
+        }
+    </script>
+    <!--帖子列表-->
+    <div class="row ball-div" th:each="note : ${notes}" th:onclick="|showDetail('${note.nid}')|">
+        <div class="col-xs-11">
+            <div class="row">
+                <span style="font-size:14px" th:text="${note.username}">小凯凯</span><span
+                    style="font-size:12px;margin-left:4px" th:text="${note.time}">2018-01-06 21:20:20</span>
+            </div>
+            <div class="row"
+                 style="line-height: 20px;margin-bottom: 5px;margin-top: 10px;word-break: break-all;"
+                 th:text="${note.title}">
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 200px;"></div>
+
+    <!--发表帖子区域-->
+    <div class="row" style="position: fixed;bottom: 0;width: 100%;">
+
+        <form action="#" th:action="@{/note/publish}" method="post">
+            <!--输入标题栏-->
+            <input type="text" name="title" class="form-control" placeholder="请输入标题..."/>
+            <!--输入框-->
+            <textarea class="form-control" name="content" style="height: 100px;"
+                      placeholder="请输入内容..."></textarea>
+            <!--确认发表的按钮-->
+            <button type="submit" class="form-control btn btn-danger">发表</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

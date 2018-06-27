@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:replace="~{common/header :: header}">...</div>
+<!--布局容器-->
+<div class="container-fluid">
+    <!--1.标题部分-->
+    <div class="row title">
+        <div class="col-xs-12">
+            登录
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 32px;">
+        <!--空列-->
+        <div class="col-xs-1"></div>
+        <!--内容部分-->
+        <div class="col-xs-10">
+            <!--2.登录注册的标题-->
+            <div class="row">
+                <div class="col-xs-6 text-center" style="color: green;">登录</div>
+                <div class="col-xs-6 text-center" onclick="location.href='/user/registerUI'">注册</div>
+            </div>
+
+            <!--3.水平分割线-->
+            <hr/>
+
+            <div style="color: red">
+
+            </div>
+
+            <form action="/user/login" method="post">
+                <!--4.表单输入项-->
+                <div class="form-group">
+                    <input type="text" name="email" class="form-control" placeholder="请输入您的邮箱...">
+                </div>
+                <!--5.密码-->
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control"
+                           placeholder="请输入您的密码...">
+                </div>
+
+                <!--9.注册-->
+                <div class="form-group">
+                    <input type="submit" class="form-control btn btn-success" value="登录">
+                </div>
+
+                <!--跳转去登录-->
+                <div style="margin-top: 15px;">
+                    <a href="/user/resetUI" style="color: green;">忘记密码</a>&nbsp;|&nbsp;<a
+                        href="/user/registerUI" style="color: green;">新用户注册</a>
+                </div>
+            </form>
+        </div>
+        <!--空列-->
+        <div class="col-xs-1"></div>
+    </div>
+
+</div>
+</body>
+
+</html>

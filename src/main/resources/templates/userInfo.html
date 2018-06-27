@@ -1,0 +1,107 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+
+<body>
+<div th:replace="~{common/header :: header}">...</div>
+<div class="container-fluid">
+    <!--标题栏页面-->
+    <div class="row">
+        <div class="col-xs-12 title">黑马彩票</div>
+    </div>
+
+    <!--用户信息栏-->
+    <div class="row">
+        <div class="col-xs-4">
+            <img src="img/icon.jpg" alt="" th:src="${session.user.headimg}"
+                 class="img-circle img-thumbnail" style="width:80px;height:80px"/>
+        </div>
+        <div class="col-xs-8" style="padding-top: 22px;padding-left: 5px;">
+            <p style="font-size: 16px;" th:text="${session.user.username}">凯骏</p>
+            <p style="font-size: 14px;" th:text="|手机号:${session.user.mobile}|">手机号:18688889999</p>
+        </div>
+    </div>
+
+    <!--水平分割线-->
+    <hr/>
+
+    <!--今日幸运中奖号码-->
+    <div class="row">
+        <div class="col-xs-12" style="color: red;margin-bottom: 9px;">
+            您今日幸运中奖号码为:
+        </div>
+
+        <div class="col-xs-12 text-center" style="height:49px;">
+            <div class="ball-item ball-red" th:text="${red.get(0)}">01</div>
+            <div class="ball-item ball-red" th:text="${red.get(1)}">03</div>
+            <div class="ball-item ball-red" th:text="${red.get(2)}">08</div>
+            <div class="ball-item ball-red" th:text="${red.get(3)}">12</div>
+            <div class="ball-item ball-red" th:text="${red.get(4)}">23</div>
+            <div class="ball-item ball-red" th:text="${red.get(5)}">29</div>
+            <div class="ball-item ball-blue" th:text="${blue}">15</div>
+        </div>
+
+        <div class="row text-center">
+            <button class="btn btn-danger">购买立中大奖</button>
+        </div>
+
+        <div class="clearfix"></div>
+        <hr>
+        <!--累计中奖次数-->
+        <div class="row" style="margin-top: 15px">
+            <div class="col-xs-6">
+                累计中奖次数:<span style="color:red;font-size: 14px;">1024</span>
+            </div>
+            <div class="col-xs-6">
+                累计中奖金额:<span style="color:red">512万</span>
+            </div>
+        </div>
+        <!--水平分割线-->
+        <hr/>
+
+        <!--账户余额-->
+        <div class="row">
+            <div class="col-xs-12">
+                账户余额:<span style="color:red;font-size: 14px;" th:text="|${session.user.money}元|">1.00元</span>
+            </div>
+        </div>
+        <!--水平分割线-->
+        <hr/>
+
+        <!--我的订单-->
+        <div class="row">
+            <div class="col-xs-12">
+                我的订单
+            </div>
+        </div>
+        <!--水平分割线-->
+        <hr/>
+
+        <!--基本信息-->
+        <div class="row">
+            <div class="col-xs-12">
+                基本信息
+            </div>
+        </div>
+        <!--水平分割线-->
+        <hr/>
+
+        <!--设置信息-->
+        <div class="row">
+            <div class="col-xs-12">
+                设置
+            </div>
+        </div>
+        <!--水平分割线-->
+        <hr/>
+
+        <!--主要是解决页面显示不完整-->
+        <div style="margin-bottom: 58px;"></div>
+
+        <!--5.底部菜单栏-->
+        <div th:replace="~{common/menu :: #menu}"></div>
+    </div>
+</div>
+</body>
+
+</html>

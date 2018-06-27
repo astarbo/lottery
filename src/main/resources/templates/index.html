@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<script>
+    //跳转进彩票详情
+    function showDetail(code) {
+        location.href = "/detail?code=" + code;
+    }
+
+    //跳转进论坛页面
+    function gotoBBS() {
+        location.href = "/note/bbs_index";
+    }
+</script>
+<body>
+<div th:replace="~{common/header :: header}">...</div>
+<!--布局容器-->
+<div class="container-fluid">
+
+    <!--1.标题部分-->
+    <div class="row title">
+        <div class="col-xs-12">
+            博彩首页
+        </div>
+    </div>
+
+    <!--2.广告轮播图部分-->
+    <div th:replace="~{common/carousel :: #carousel }"></div>
+
+    <!--3.论坛入口-->
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-xs-12" onclick="gotoBBS()">
+            <h4>博彩论坛</h4>
+            <span th:text="${note.title}">...</span>
+        </div>
+    </div>
+
+    <!--4.彩票历史记录-->
+    <div class="row" th:each="history : ${list}"
+         style="border: 1px solid gainsboro;height: 80px;padding-top: 5px;">
+        <!--左边11个格子-->
+        <div class="col-xs-11">
+            <!--开奖日期-->
+            <div class="row">
+                <span style="font-size: 18px;" th:text="${history.code}"></span>
+                <span style="margin-left: 10px;" th:text="|第${history.date}期|">2018-02-13(二)</span>
+            </div>
+            <!--开奖号码-->
+            <div class="row" style="margin-top: 10px;">
+                <div class="ball-item ball-red" th:text="${history.red.split(',')[0]}">01</div>
+                <div class="ball-item ball-red" th:text="${history.red.split(',')[1]}">11</div>
+                <div class="ball-item ball-red" th:text="${history.red.split(',')[2]}">22</div>
+                <div class="ball-item ball-red" th:text="${history.red.split(',')[3]}">23</div>
+                <div class="ball-item ball-red" th:text="${history.red.split(',')[4]}">28</div>
+                <div class="ball-item ball-red" th:text="${history.red.split(',')[5]}">30</div>
+                <div class="ball-item ball-blue" th:text="${history.blue}">15</div>
+            </div>
+        </div>
+
+        <!--右边1个格子-->
+        <div class="col-xs-1" style="padding-left: 0px;padding-top: 30px;"
+             th:onclick="|showDetail(${history.code})|">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </div>
+    </div>
+    <!--分页-->
+    <div class="row text-center">
+        <nav>
+            <ul class="pagination">
+                <li>
+                    <a th:if="${not isFirstPage}"
+                       th:href="@{${'/'}(pageNum=${pageNum - 1},pageSize=${pageSize})}">上一页</a>
+                    <a th:if="${isFirstPage}" href="javascript:void(0);">上一页</a>
+                </li>
+                <li th:each="pageNo : ${#numbers.sequence(1, totalPages)}">
+                    <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
+                        <span th:text="${pageNo}"></span>
+                    </a>
+
+                    <a th:if="${not (pageNum eq pageNo)}"
+                       th:href="@{${'/'}(pageNum=${pageNo},size=${pageSize})}">
+                        <span th:text="${pageNo}"></span>
+                    </a>
+                </li>
+                <li>
+                    <a th:if="${not isLastPage}"
+                       th:href="@{${'/'}(pageNum=${pageNum+1},size=${pageSize})}">下一页</a>
+                    <a th:if="${isLastPage}" href="javascript:void(0);">下一页</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!--主要是解决页面显示不完整-->
+    <div style="margin-bottom: 65px;"></div>
+
+    <!--5.底部菜单栏-->
+    <div th:replace="~{common/menu :: #menu }">
+    </div>
+</div>
+</body>
+
+</html>

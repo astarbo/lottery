@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+<!--
+    1.th:insert，插入指定的片段作为正文的主标签
+    2.th:replace，用指定的实际片段来替换其主标签
+-->
+<div th:insert="~{common/common-test :: foot}"></div>
+<div th:insert="~{common/common-test :: #foot1}"></div>
+<div th:replace="~{common/common-test :: #foot2}"></div>
+</body>

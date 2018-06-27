@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<!--底部菜单栏-->
+<div class="menu" id="menu">
+    <div class="col-xs-4 menu-item menu-item-activied" id="index">
+        <span class="glyphicon glyphicon-home"></span>
+        <p>首页</p>
+    </div>
+    <div class="col-xs-4 menu-item" id="cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span>
+        <p>选号</p>
+    </div>
+    <div class="col-xs-4 menu-item" id="userInfo">
+        <span class="glyphicon glyphicon-user"></span>
+        <p>我</p>
+    </div>
+    <script>
+        $("#userInfo").click(function () {
+            location.href = "/user/userInfo";
+        });
+
+        $("#cart").click(function () {
+            location.href = "/selectUI";
+        });
+
+        $("#index").click(function () {
+            location.href = "/";
+        });
+    </script>
+</div>
+</body>
+</html>
