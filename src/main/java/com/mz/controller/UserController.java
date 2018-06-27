@@ -33,7 +33,6 @@ public class UserController {
 
     @GetMapping("/loginUI")
     public String login() {
-
         return "login";
     }
 
@@ -100,6 +99,7 @@ public class UserController {
 
         return "login";
     }
+
 
     @GetMapping("userInfo")
     public String userInfo(HttpSession session,Model model) {

@@ -87,13 +87,22 @@
         <hr/>
 
         <!--设置信息-->
-        <div class="row">
+        <div class="row" onclick="redirect('/user/loginUI')">
             <div class="col-xs-12">
                 设置
             </div>
         </div>
         <!--水平分割线-->
         <hr/>
+
+        <!--主要是解决页面显示不完整-->
+        <!--<div style="margin-bottom: 58px;"></div>-->
+
+        <div class="row text-center">
+            <div class="col-xs-12">
+                <input type="button" class="btn btn-danger" value="退出登录" onclick="redirect('/user/loginUI')">
+            </div>
+        </div>
 
         <!--主要是解决页面显示不完整-->
         <div style="margin-bottom: 58px;"></div>
