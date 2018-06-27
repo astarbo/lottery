@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2018/6/26
  * @time 20:26
  */
-@WebFilter(urlPatterns = {"/note/publish", "/comment/add"})
+@WebFilter(urlPatterns = {"/note/publish", "/comment/add","/order/*"})
 public class CheckLoginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

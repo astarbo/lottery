@@ -102,7 +102,7 @@
     <div style="margin-bottom: 58px;"></div>
 
     <!--5.底部菜单栏-->
-    <div class="menu">
+    <div class="menu" onclick="redirect('/order/submit')">
         <div class="col-xs-12 menu-item" style="height: 50px;line-height: 50px;">
             <p th:text="|立即付款 ${session.cart?.getTotal()}元|">立即付款 6元</p>
         </div>
