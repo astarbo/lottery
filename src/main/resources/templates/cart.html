@@ -7,7 +7,6 @@
             margin-right: 5px;
         }
     </style>
-
 </head>
 
 <body>
@@ -27,7 +26,7 @@
     <div th:replace="~{common/carousel :: #carousel }"></div>
 
     <!--3.开奖信息-->
-    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+    <div class="row text-center" style="margin-top: 10px;margin-bottom: 10px;">
         <div class="col-xs-4" style="padding-left: 0;">第2018019期</div>
         <div class="col-xs-8" style="padding-left: 0;padding-right: 0;">
             奖池<span style="color: red;">4亿1523万</span>,可开出<span style="color: red;">83注</span>500万
@@ -39,40 +38,58 @@
     <!--按钮组-->
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-xs-4">
-            <button type="button" class="btn btn-default">
+            <button type="button" class="btn btn-default" onclick="redirect('/cart/selectUI')">
                 +手动选号
             </button>
         </div>
         <div class="col-xs-4">
-            <button type="button" class="btn btn-success">
+            <button type="button" class="btn btn-success" onclick="redirect('/cart/selectUI?randomOneFlag=true')">
                 +机选一注
             </button>
         </div>
         <div class="col-xs-4">
-            <button type="button" class="btn btn-danger">清空列表</button>
+            <button type="button" class="btn btn-danger" id="clearBtn">清空列表</button>
         </div>
+        <script>
+            $("#clearBtn").click(function () {
+                var flag = confirm("你确定要清空购物车吗?");
+                if (flag) {
+                    redirect('/cart/clear');
+                }
+            });
+        </script>
     </div>
 
     <script>
 
     </script>
     <!--购物项内容-->
-    <div class="row" style="padding-top: 10px;padding-bottom: 10px;border: 1px solid #E5E5E5;">
+    <div class="row" style="padding-top: 10px;padding-bottom: 10px;border: 1px solid #E5E5E5;"
+         th:each="item :${session.cart?.getCartItems()}">
         <div class="col-xs-1" style="padding-left: 10px;padding-top: 18px;">
             <!--删除的图标-->
-            <span class="glyphicon glyphicon-remove-circle"></span>
+            <span class="glyphicon glyphicon-remove-circle"
+                  th:onclick="|delOne('${item.red}-${item.blue}')|"></span>
         </div>
+        <script>
+            function delOne(key) {
+                var flag = confirm("你确定要删除吗?");
+                if (flag) {
+                    location.href = "/cart/delByKey?key=" + key;
+                }
+            }
+        </script>
         <div class="col-xs-10" style="padding-right: 0px;">
             <div>
-                <div class="ball-item ball-red">01</div>
-                <div class="ball-item ball-red">11</div>
-                <div class="ball-item ball-red">22</div>
-                <div class="ball-item ball-red">23</div>
-                <div class="ball-item ball-red">28</div>
-                <div class="ball-item ball-red">30</div>
-                <div class="ball-item ball-blue">15</div>
+                <div class="ball-item ball-red" th:text="${item.red.split(',')[0]}">01</div>
+                <div class="ball-item ball-red" th:text="${item.red.split(',')[1]}">11</div>
+                <div class="ball-item ball-red" th:text="${item.red.split(',')[2]}">22</div>
+                <div class="ball-item ball-red" th:text="${item.red.split(',')[3]}">23</div>
+                <div class="ball-item ball-red" th:text="${item.red.split(',')[4]}">28</div>
+                <div class="ball-item ball-red" th:text="${item.red.split(',')[5]}">30</div>
+                <div class="ball-item ball-blue" th:text="${item.blue}">15</div>
             </div>
-            <div style="margin-top: 5px;">单式1注 2元
+            <div style="margin-top: 5px;" th:text="|单式${item.count}注 ${item.subtotal}元|">单式1注 2元
             </div>
         </div>
         <div class="col-xs-1" style="padding-left: 10px;padding-top: 18px;">
@@ -87,7 +104,7 @@
     <!--5.底部菜单栏-->
     <div class="menu">
         <div class="col-xs-12 menu-item" style="height: 50px;line-height: 50px;">
-            <p>立即付款 6元</p>
+            <p th:text="|立即付款 ${session.cart?.getTotal()}元|">立即付款 6元</p>
         </div>
     </div>
 

@@ -200,7 +200,8 @@
 
     <!--机选幸运号的按钮-->
     <div style="margin-top: 10px;">
-        <input type="button" value="机选幸运号" id="btn_random" class="btn btn-danger pull-right"/>
+        <input type="button" value="机选幸运号" class="btn btn-danger pull-right"
+               onclick="randomAndSend()"/>
         <select id="selectId" class="form-control pull-right"
                 style="width: 60px;display: inline-block;">
             <option>1</option>
@@ -221,13 +222,8 @@
     <div style="margin-bottom: 58px;height: 58px;"></div>
 
     <!--5.底部菜单栏-->
-    <script>
-        function gotoCart() {
-            location.href = "/cart/cartUI";
-        }
-    </script>
     <div class="menu">
-        <div class="col-xs-6 menu-item" onclick="gotoCart()">
+        <div class="col-xs-6 menu-item" onclick="redirect('/cart/cartUI')">
             <span class="glyphicon glyphicon-shopping-cart"></span>
             <span id="cartSizeId" class="badge"
                   style="background-color: red;position: absolute;top: -10px"></span>
@@ -237,10 +233,150 @@
             <span class="glyphicon glyphicon-save"></span>
             <p>立即投注</p>
         </div>
-
     </div>
-
 </div>
-</body>
+<script>
+    $(function () {
+        /**
+         * 根据randomOneFlag判断是否需要机选一注
+         */
+        var flag = [[${randomOneFlag}]]
+        console.log(flag);
+        if (flag != null) {
+            randomOne();
+        }
+        /**
+         * 红球选择逻辑
+         */
+        $(".ball-red").click(function () {
+            var isSelected = $(this).is(".ball-red-selected");
+            if (isSelected) {
+                $(".ball-red-selected").removeClass("ball-red-selected");
+            } else {
+                var count = $(".ball-red-selected").length;
+                if (count >= 6) {
+                    alert("最多只能选择六个球！");
+                } else {
+                    $(this).addClass("ball-red-selected");
+                }
+            }
+        });
+        /**
+         * 蓝球选择逻辑
+         */
+        $(".ball-blue").click(function () {
+            //移除所有被选择的蓝球的样式
+            $(".ball-blue-selected").removeClass("ball-blue-selected");
+            //给当前的蓝球加上被选择的样式
+            $(this).addClass("ball-blue-selected");
+        });
+    })
 
+    /**
+     * 获取被选择的球的号码信息，封装成一个json字符串
+     */
+    function getResult() {
+        //找到所有被选择的红球
+        var redBalls = "";
+        $(".ball-red-selected").each(function (i, ball) {
+            //获取每个球的号码
+            redBalls += "," + $(ball).text();
+        })
+        redBalls = redBalls.substr(1);
+        console.log("红球:" + redBalls);
+        //获取被选择的蓝球的号码
+        var blueBall = $($(".ball-blue-selected").get(0)).text();
+        console.log("蓝球:" + blueBall);
+        return {
+            red: redBalls,
+            blue: blueBall
+        }
+    }
+
+    /**
+     * 随机获取一注双色球
+     */
+    function randomOne() {
+        console.log("进入随机选球方法");
+        //清空所有球的选择样式
+        $(".ball-red-selected").removeClass("ball-red-selected");
+
+        while ($(".ball-red-selected").length < 6) {
+            //随机从33个红色球中选取一个
+            var i = Math.floor(Math.random() * 33);
+            console.log("i=" + i);
+            $($(".ball-red").get(i)).addClass("ball-red-selected");
+        }
+        //清除蓝色球的样式
+        $(".ball-blue-selected").removeClass("ball-blue-selected");
+        var j = Math.floor(Math.random() * 16);
+        console.log("j=" + j);
+        $($(".ball-blue").get(j)).addClass("ball-blue-selected");
+    }
+
+    /**
+     * 通过ajax发送数据到后台
+     */
+    function sendToBackend(arr) {
+        var url = "/cart/addToCart";
+        //将数据转化为json字符串
+        var data = {
+            "balls": JSON.stringify(arr)
+        };
+        console.log("发送到后台的数据:" + data.balls);
+        $.post(url, data, function (result) {
+            console.log("后台传回来的数据:" + result.cartSize);
+            //获取购买商品的数量,并赋值给购物车图标
+            $("#cartSizeId").text(result.cartSize);
+        }, "json");
+    }
+
+
+    /**
+     * 添加一注彩票进入购物车
+     */
+    function addOne() {
+        //获取所有被选择红球的数量
+        var redLen = $(".ball-red-selected").length;
+        console.log("红球:" + redLen);
+        //获取被选择的篮球的数量
+        var blueLen = $(".ball-blue-selected").length;
+        console.log("蓝球:" + blueLen);
+        if (redLen == 0 && blueLen == 0) {
+            randomOne();
+        } else if (redLen != 6 || blueLen != 1) {
+            alert("请选择6个红球,1个蓝球");
+        } else {
+            var data = getResult();
+            var arr = Array();
+            arr.push(data);
+            sendToBackend(arr);
+        }
+    }
+
+    /**
+     * 机选之后加入购物车
+     */
+    function randomAndSend() {
+        console.log("进入机选~");
+        //获取随机选择几注
+        var count = $("#selectId").val();
+        console.log("选择注数为:" + count);
+        //创建一个数组存储球的信息
+        var arr = Array();
+        for (var i = 0; i < count; i++) {
+            //随机产生一组双色球
+            randomOne();
+            //获取彩票随机的结果
+            var ball = getResult();
+            //添加进数组
+            arr.push(ball);
+        }
+        console.log("跳出循环~");
+        //发送到后台
+        console.log("开始发送数据到后台~");
+        sendToBackend(arr);
+    }
+</script>
+</body>
 </html>

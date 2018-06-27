@@ -4,11 +4,6 @@
 </head>
 <body>
 <div th:replace="~{common/header :: header}">...</div>
-<script>
-    function tiaozhuan() {
-        location.href = '01-博彩首页.html';
-    }
-</script>
 <!--布局容器-->
 <div class="container-fluid">
 
@@ -22,14 +17,14 @@
 
     <!--2.广告轮播图部分-->
     <div th:replace="~{common/carousel :: #carousel }"></div>
-    <!--3.开奖日期-->
-    <div style="margin-top: 8px;">
-        <div style="float: left;" th:text="|第${history.code}期|">第2018019期</div>
-        <div style="float: right;" th:text="${history.date}">2018-02-06(二)</div>
-    </div>
 
-    <!--清除浮动的div-->
-    <div class="clearfix"></div>
+    <!--3.开奖日期-->
+    <div style="margin-top: 8px;" class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-4" th:text="|第${history.code}期|">第2018019期</div>
+        <div class="col-xs-4" th:text="${history.date}">2018-02-06(二)</div>
+        <div class="col-xs-2"></div>
+    </div>
 
     <!--4.中奖号码-->
     <div class="row text-center" style="margin-top: 10px;">

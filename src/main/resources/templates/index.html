@@ -2,17 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 </head>
-<script>
-    //跳转进彩票详情
-    function showDetail(code) {
-        location.href = "/detail?code=" + code;
-    }
 
-    //跳转进论坛页面
-    function gotoBBS() {
-        location.href = "/note/bbs_index";
-    }
-</script>
 <body>
 <div th:replace="~{common/header :: header}">...</div>
 <!--布局容器-->
@@ -30,7 +20,7 @@
 
     <!--3.论坛入口-->
     <div class="row" style="padding-bottom: 10px;">
-        <div class="col-xs-12" onclick="gotoBBS()">
+        <div class="col-xs-12" onclick="redirect('/note/bbs_index')">
             <h4>博彩论坛</h4>
             <span th:text="${note.title}">...</span>
         </div>
@@ -63,6 +53,13 @@
              th:onclick="|showDetail(${history.code})|">
             <span class="glyphicon glyphicon-chevron-right"></span>
         </div>
+        <script>
+            //跳转进彩票详情
+            function showDetail(code) {
+                location.href = "/detail?code=" + code;
+            }
+
+        </script>
     </div>
     <!--分页-->
     <div class="row text-center">

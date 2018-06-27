@@ -68,8 +68,4 @@ public class IndexController {
         return "detail";
     }
 
-    @GetMapping("/selectUI")
-    public String selectUI() {
-        return "select";
-    }
 }
