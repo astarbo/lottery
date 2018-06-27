@@ -18,5 +18,10 @@ spring:
       hibernate:
         format_sqp: true
 
-  resources:
-    static-locations: classpath:/static
+  http:
+    multipart:
+      #单个上传文件大小
+      max-file-size: 5mb
+      #同一次请求中,所有请求上传数据的大小
+      max-request-size: 10mb
+

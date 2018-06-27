@@ -12,15 +12,51 @@
 
     <!--用户信息栏-->
     <div class="row">
-        <div class="col-xs-4">
-            <img src="img/icon.jpg" alt="" th:src="${session.user.headimg}"
-                 class="img-circle img-thumbnail" style="width:80px;height:80px"/>
+        <div class="col-xs-1"></div>
+        <div class="col-xs-4" onclick="upload()">
+            <div class="row">
+                <img src="img/icon.jpg" alt="" th:src="${session.user.headimg}"
+                     class="img-circle img-thumbnail" style="width:80px;height:80px"/>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">上传头像
+                </button>
+            </div>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <!--content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                        </div>
+                        <!--body-->
+                        <div class="modal-body">
+                            <form action="/upload" method="post" enctype="multipart/form-data">
+                                <div class="row">
+                                    <input type="file" name="file"/><br/>
+                                    <input type="submit" value="文件上传" class="btn btn-primary"/><br/>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
         </div>
-        <div class="col-xs-8" style="padding-top: 22px;padding-left: 5px;">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-6" style="padding-top: 22px;padding-left: 5px;">
             <p style="font-size: 16px;" th:text="${session.user.username}">凯骏</p>
             <p style="font-size: 14px;" th:text="|手机号:${session.user.mobile}|">手机号:18688889999</p>
         </div>
     </div>
+    <script>
+        function upload() {
+            console.log("上传文件");
+        }
+    </script>
 
     <!--水平分割线-->
     <hr/>
@@ -95,12 +131,10 @@
         <!--水平分割线-->
         <hr/>
 
-        <!--主要是解决页面显示不完整-->
-        <!--<div style="margin-bottom: 58px;"></div>-->
-
         <div class="row text-center">
             <div class="col-xs-12">
-                <input type="button" class="btn btn-danger" value="退出登录" onclick="redirect('/user/loginUI')">
+                <input type="button" class="btn btn-danger" value="退出登录"
+                       onclick="redirect('/user/loginUI')">
             </div>
         </div>
 
