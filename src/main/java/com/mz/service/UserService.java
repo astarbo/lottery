@@ -22,4 +22,6 @@ public interface UserService {
      * @return
      */
     User findOne(String email, String password);
+
+    void update(User user);
 }

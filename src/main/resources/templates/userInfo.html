@@ -13,9 +13,9 @@
     <!--用户信息栏-->
     <div class="row">
         <div class="col-xs-1"></div>
-        <div class="col-xs-4" onclick="upload()">
+        <div class="col-xs-4">
             <div class="row">
-                <img src="img/icon.jpg" alt="" th:src="${session.user.headimg}"
+                <img src="img/icon.jpg" alt="" th:src="|@{/get}${session.user.headimg}|"
                      class="img-circle img-thumbnail" style="width:80px;height:80px"/>
             </div>
             <div class="row">
@@ -52,11 +52,6 @@
             <p style="font-size: 14px;" th:text="|手机号:${session.user.mobile}|">手机号:18688889999</p>
         </div>
     </div>
-    <script>
-        function upload() {
-            console.log("上传文件");
-        }
-    </script>
 
     <!--水平分割线-->
     <hr/>

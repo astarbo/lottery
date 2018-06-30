@@ -29,4 +29,9 @@ public class UserServiceImpl implements UserService {
     public User findOne(String email, String password) {
         return mUserDao.findByEmailAndPassword(email,MD5Util.encode(password));
     }
+
+    @Override
+    public void update(User user) {
+        mUserDao.save(user);
+    }
 }

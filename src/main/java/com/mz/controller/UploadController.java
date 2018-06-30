@@ -1,12 +1,26 @@
 package com.mz.controller;
 
+import com.mz.domain.User;
+import com.mz.service.UserService;
+import com.mz.utils.UploadUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author mz
@@ -16,33 +30,71 @@ import java.io.IOException;
  */
 @Controller
 public class UploadController {
-    private static String DIR="F:/2_server/java_web_pro/SpringBootStudy/lottery/src/main/resources/static/img";
+    @Autowired
+    UserService userService;
 
     @PostMapping("/upload")
-    public String upload(MultipartFile file) {
+    public String upload(MultipartFile file, HttpSession session) throws IOException {
 
-        try {
-            //获取的是 <input type="file" name="image" /> name属性对应的值
-            String name = file.getName();
-            //获取上传的文件名
-            String filename = file.getOriginalFilename();
+        //获取文件的内容
+        InputStream is = file.getInputStream();
+        //获取原始文件名
+        String originalFilename = file.getOriginalFilename();
+        System.out.println(originalFilename);
 
-            //判断目标文件夹是否已经
-            File dir = new File(DIR);
-            if (!dir.exists()){
-                dir.mkdirs();
-            }
-            //指定文件保存的位置
-            File destFile = new File(DIR,filename);
-            file.transferTo(destFile);
-        } catch (IOException e) {
-            e.printStackTrace();
+        // FALKDJFOIQWYREIUQEWT.jpg 生成一个uuid名称出来
+        String uuidFilename = UploadUtils.getUUIDName(originalFilename);
+        System.out.println(uuidFilename);
+
+        //产生一个随机目录
+        String randomDir = UploadUtils.getDir();
+
+        File fileDir = new File("D:/uploadfiles" + randomDir);
+        //若文件夹不存在,则创建出文件夹
+        if (!fileDir.exists()) {
+            fileDir.mkdirs();
         }
-        return "redirect:/successUI";
+
+        File newFile = new File("D:/uploadfiles" + randomDir, uuidFilename);
+        //将文件输出到目标的文件中
+        file.transferTo(newFile);
+
+
+        //将保存的文件路径更新到用户信息headimg中
+        String savePath = randomDir + "/" + uuidFilename;
+
+        //获取当前的user
+        User user = (User) session.getAttribute("user");
+        //设置头像图片路径
+        user.setHeadimg(savePath);
+
+        //调用业务更新user
+        userService.update(user);
+        //生成响应 : 跳转去用户详情页面
+        return "redirect:/user/userInfo";
     }
 
-    @GetMapping("/successUI")
-    public String success() {
-        return "success";
+    @Autowired
+    ResourceLoader resourceLoader;
+
+    /**
+     * 需要文件后缀名
+     * @param filename
+     * @return
+     */
+    @GetMapping("/get/{dir1}/{dir2}/{filename:.+}")
+    public ResponseEntity get(@PathVariable String dir1,
+                              @PathVariable String dir2,
+                              @PathVariable String filename) {
+        //1.根据用户名去获取相应的图片
+        System.out.println(filename);
+
+        Path path = Paths.get("D:/uploadfiles" + "/" + dir1 + "/" + dir2, filename);
+        System.out.println(path);
+        //2.将文件加载进来
+        Resource resource = resourceLoader.getResource("file:" + path.toString());
+
+        return ResponseEntity.ok(resource);
     }
+
 }
