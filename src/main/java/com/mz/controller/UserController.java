@@ -93,7 +93,12 @@ public class UserController {
         if (user != null) {
             //保存登录状态
             session.setAttribute("user", user);
+            String uri = (String) session.getAttribute("uri");
+            if (uri != null) {
+                return "redirect:" + uri;
+            }
             return "redirect:/";
+
         }
         model.addAttribute("msg","用户名或密码错误");
 
